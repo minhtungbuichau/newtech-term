@@ -76,3 +76,13 @@ div.panel-heading{
     transition: 0.3s;
 }
 
+.media-body p {
+    padding-top: 2vh;
+    text-align: left;
+}
+
+.team-member{
+    text-align: left;
+    list-style-type: none;
+    margin-left: -2vh;
+}

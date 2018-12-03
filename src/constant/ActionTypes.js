@@ -1,0 +1,3 @@
+export const VIEW_POST = 'VIEW_POST';
+export const VIEW_FOLLOWING = 'VIEW_FOLLOWING';
+export const VIEW_FOLLOWER = 'VIEW_FOLLOWER';
