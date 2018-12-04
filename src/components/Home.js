@@ -7,12 +7,52 @@ import RightColumn from './RightColumn';
 import './../css/profile.css';
 import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
+import {connect} from 'react-redux';
+import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
+import userInfoReducer from "../reducer/userInfoReducer";
+
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+
+    }
+
+    createCompoent = (text) =>{
+        return (
+            <div>
+                <h1>
+                    {text}
+                </h1>
+            </div>
+        )
+    };
     render() {
+
+        //user
+       var viewComponent = null;
+        switch (this.props.userAction.view) {
+            case VIEW_FOLLOWER:
+                viewComponent = this.createCompoent(VIEW_FOLLOWER);
+                break;
+            case VIEW_FOLLOWING:
+                viewComponent = this.createCompoent(VIEW_FOLLOWING);
+        }
+
+        //navbar
+
+        var tweetContent = this.createCompoent(this.props.navbarAction.content);
+
+        var userInfoText = this.createCompoent(this.props.userInfoAction.view);
+
+
         return (
             <div>
             <Navbar/>
             <div className="container">
+                {viewComponent}
+                {tweetContent}
+                {userInfoText}
               <div className="row">
                 <div className="col-sm-3">
                   <User/>
@@ -30,4 +70,14 @@ class Home extends Component {
         );
     }
 }
-export default Home;
+
+var mapStateToProps = state =>{
+    return{
+        userAction: state.userReducer,
+        navbarAction: state.navbarReducer,
+        userInfoAction: state.userInfoReducer,
+
+    }
+};
+
+export default connect(mapStateToProps,null)(Home);

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './../css/user.css';
+import  {connect} from 'react-redux';
+import {onViewFollower,onViewFollowing} from '../action/userAction';
+
 class User extends Component {
   state = {
     isOwner: true,
@@ -13,21 +16,24 @@ class User extends Component {
         return className + "selected";
 
     return className + "normal";
-  }
+  };
 
   onClickFollowing = () => {
-    this.setState({
-        selected: "following"
-    });
-    //this.props.onViewFollowing();
-  }
+    // this.setState({
+    //     selected: "following"
+    // });
+    this.props.onViewFollowing();
+
+  };
 
   onClickFollowers = () => {
-      this.setState({
-          selected: "followers"
-      });
+      // this.setState({
+      //     selected: "followers"
+      // });
+
+      this.props.onViewFollower();
       //this.props.onViewFollower();
-  }
+  };
   
   render() {
       const avatarUrl = "https://media.tintucvietnam.vn/uploads/medias/2018/01/28/1024x1024/mot-dem-khong-ngu-vi-nhung-hinh-anh-tuyet-dep-nay-cua-tran-chung-ket-u23-chau-a-bb-baaadedKLx.jpg?v=1517078417042";
@@ -69,4 +75,15 @@ class User extends Component {
     }
 }
 
-export default User;        
+var mapDispatchToProps = (dispatch) =>{
+    return{
+        onViewFollower: () =>{
+            dispatch(onViewFollower());
+        },
+        onViewFollowing: () =>{
+            dispatch(onViewFollowing())
+        }
+    }
+};
+
+export default connect(null,mapDispatchToProps)(User);

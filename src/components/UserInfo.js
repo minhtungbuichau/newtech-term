@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
+import  {editUserInfo} from  '../action/userInfoAction'
+import  {connect} from  'react-redux';
 
 class UserInfo extends Component {
+
+    constructor(props) {
+        super(props);
+
+    }
+
+    onEditInfo = () =>{
+        this.props.onEditInfo();
+    };
+
     render() {
         return (
             <div>
@@ -8,7 +20,13 @@ class UserInfo extends Component {
                     <div className="panel-heading">
                       <div className="row">
                         <div className="col-sm-6"><h3 className="panel-title">Information</h3></div>
-                        <a href="#"><div className="col-sm-6 update-btn text-center justify-content-center">Edit</div></a>
+                        <a href="#">
+                            <div
+                                className="col-sm-6 update-btn text-center justify-content-center"
+                                onClick={this.onEditInfo}
+                            >
+                                Edit
+                            </div></a>
                       </div>
                     </div>
                     <div className="panel-body">
@@ -25,4 +43,11 @@ class UserInfo extends Component {
     }
 }
 
-export default UserInfo;
+var mapDispatchToProps = (dispatch) =>{
+    return {
+        onEditInfo:  () => {
+            dispatch(editUserInfo());
+        }
+    };
+};
+export default connect(null,mapDispatchToProps) (UserInfo);
