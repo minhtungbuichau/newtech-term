@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import  {connect} from 'react-redux';
-import  {onWriteTweet} from './../action/navBarAction'
+import  {onWriteTweet} from './../action/navBarAction';
+import Modal from 'react-awesome-modal';
 class Navbar extends Component {
-
-
-
     constructor(props) {
         super(props);
         this.state = {
-          contentPost: 'pham anh tuan',
+            // contentPost: 'pham anh tuan',
+            visible: false
         };
-
     }
 
-    onWriteTweet =() =>{
-      this.props.onWriteTweet(this.state.contentPost);
+    onWriteTweet = () =>{
+        //   this.props.onWriteTweet(this.state.contentPost);
+          this.props.onWriteTweet();
+          this.setState({
+            visible : true
+            } );
     };
+    closeTweetModal() {
+        this.setState({
+            visible : false
+        });
+    }
+
+
+    
+
+    createTweetComponent = (text) =>{
+        return (
+            <div>
+              <Modal visible={this.state.visible} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+                  <div>
+                      <h1>Tweet</h1>
+                      <p>Some Contents</p>
+                      <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
+                  </div>
+              </Modal>
+            </div>
+        )
+      };
 
     render() {
        
+        var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
+        
         return (
             <div>
                 <div className="navbar navbar-default navbar-static-top">
@@ -46,6 +72,7 @@ class Navbar extends Component {
                                 aria-label="Left Align"
                                 onClick={this.onWriteTweet}
                         >
+                        {/* {tweetContent} */}
                             <span className="glyphicon glyphicon-pencil" aria-hidden="true"> </span> Tweet
                         </button>
                     </div>
@@ -65,4 +92,10 @@ var mapDispatchToProps = (dispatch) =>{
   };
 };
 
-export default connect(null,mapDispatchToProps)(Navbar);
+var mapStateToProps = (state)=>{
+    return{
+        navbarAction: state.navbarReducer
+    }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Navbar);
