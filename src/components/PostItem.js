@@ -11,9 +11,9 @@ class PostItem extends Component {
                 <div className="media-body">
                    <p>{postContent}</p>
                      <ul className="nav nav-pills nav-pills-custom">
-                        <li><a href="#"><span className="glyphicon glyphicon-heart" /></a></li>
-                        <li><a href="#"><span className="glyphicon glyphicon-comment" /></a></li>
-                        <li><a href="#"><span className="glyphicon glyphicon-share" /></a></li>
+                        <li><a href="#"><span className="glyphicon glyphicon-heart" />100</a></li>
+                        <li><a href="#"><span className="glyphicon glyphicon-comment" />140</a></li>
+                        <li><a href="#"><span className="glyphicon glyphicon-share" />50</a></li>
                         <li><a href="#"><span className="glyphicon glyphicon-option-horizontal" /></a></li>
                     </ul>
                 </div>

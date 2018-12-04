@@ -2,43 +2,106 @@ import React, { Component } from 'react';
 import './../css/user.css';
 import  {connect} from 'react-redux';
 import {onViewFollower,onViewFollowing} from '../action/userAction';
-
+import ListFollow from './ListFollow';
+import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
+import Modal from 'react-awesome-modal';
 class User extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleFollowing : false,
+      visibleFollower : false
+  }
+  }
   state = {
     isOwner: true,
     selected: "posts"
   };  
 
-  getClassNameSelect = (type) => {
-    let className = "navbar-item ";
-
-    if (type === this.state.selected)
-        return className + "selected";
-
-    return className + "normal";
-  };
 
   onClickFollowing = () => {
     // this.setState({
     //     selected: "following"
     // });
     this.props.onViewFollowing();
-
+    this.setState({
+      visibleFollowing : true
+    });
+    
   };
 
-  onClickFollowers = () => {
+  onClickFollower = () => {
       // this.setState({
       //     selected: "followers"
       // });
 
       this.props.onViewFollower();
-      //this.props.onViewFollower();
+      this.setState({
+        visibleFollower : true
+      });
   };
+
+  // openModal = ()=> {
+  //   this.setState({
+  //     visibleFollower : true, 
+  //     visibleFollowing : true
+  //   });
+  // }
+
+  closeFollowModal = () => {
+      this.setState({
+        visibleFollower : false,
+        visibleFollowing : false  
+      });
+  }
   
+  
+  createViewFollowingComponent = (text) =>{
+    return (
+        <div>
+          <Modal visible={this.state.visibleFollowing} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeFollowModal()}>
+          <div>
+                <h1>List of Following</h1>
+                <p>Some Contents</p>
+                <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
+            </div>
+        </Modal>
+        </div>
+    )
+  };
+  createViewFollowerComponent = (text) =>{
+    return (
+        <div>
+          <Modal visible={this.state.visibleFollower} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeFollowModal()}>
+              <div>
+                  <h1>List of Follower</h1>
+                  <p>Some Contents</p>
+                  <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
+              </div>
+          </Modal>
+        </div>
+    )
+  };
   render() {
       const avatarUrl = "https://media.tintucvietnam.vn/uploads/medias/2018/01/28/1024x1024/mot-dem-khong-ngu-vi-nhung-hinh-anh-tuyet-dep-nay-cua-tran-chung-ket-u23-chau-a-bb-baaadedKLx.jpg?v=1517078417042";
       // const { isOwner } = this.state;
       const username = "Bùi Châu Minh Tùng";
+      var viewComponent = null;
+        switch (this.props.userAction.view) {
+            case VIEW_FOLLOWER:
+                viewComponent = this.createViewFollowerComponent(VIEW_FOLLOWER);
+                console.log(viewComponent);
+                break;
+            case VIEW_FOLLOWING:
+                viewComponent = this.createViewFollowingComponent(VIEW_FOLLOWING);
+                console.log(viewComponent);
+                break;
+        }
+        //navbar
+
+       // var tweetContent = this.createCompoent(this.props.navbarAction.content);
+
+        //var userInfoText = this.createCompoent(this.props.userInfoAction.view);
 
         return (
             <div>
@@ -58,13 +121,18 @@ class User extends Component {
                         <div className="col-xs-4">
                           <h5>
                             <small>FOLLOWING</small>
-                            <div className={this.getClassNameSelect("following")} onClick={() =>this.onClickFollowing()}><a href="#">251</a></div>
+                            {/* <div onClick={() =>this.onClickFollowing()}><a href="#">251</a></div> */}
+                            <div onClick={() => this.onClickFollowing()}><a href="#">251</a></div>
+                            
+                            {viewComponent}
                           </h5>
                         </div>
                         <div className=" col-xs-5">
                           <h5>
                             <small>FOLLOWERS</small>
-                            <div className={this.getClassNameSelect("followers")} onClick={() =>this.onClickFollowers()}><a href="#">345</a></div>
+                            <div onClick={() => this.onClickFollower()}><a href="#">251</a></div>
+                        
+                            {viewComponent}
                           </h5>
                         </div>
                       </div>
@@ -86,4 +154,14 @@ var mapDispatchToProps = (dispatch) =>{
     }
 };
 
-export default connect(null,mapDispatchToProps)(User);
+var mapStateToProps = state =>{
+  return{
+      userAction: state.userReducer,
+      navbarAction: state.navbarReducer,
+      userInfoAction: state.userInfoReducer,
+
+  }
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(User);

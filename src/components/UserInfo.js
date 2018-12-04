@@ -1,19 +1,45 @@
 import React, { Component } from 'react';
 import  {editUserInfo} from  '../action/userInfoAction'
 import  {connect} from  'react-redux';
-
+import Modal from 'react-awesome-modal';
 class UserInfo extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            visibleEditInfo : false
+        }
     }
 
     onEditInfo = () =>{
         this.props.onEditInfo();
+        this.setState({
+            visibleEditInfo : true
+        });
     };
 
+    closeUserInfoModal = () => {
+        this.setState({
+          visibleEditInfo : false
+        });
+    }
+
+    createUserInfoComponent = (text) => {
+        return (
+            <div>
+              <Modal visible={this.state.visibleEditInfo} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeUserInfoModal()}>
+              <div>
+                    <h1>Edit Infomation</h1>
+                    <p>Some Contents</p>
+                    <a href="javascript:void(0);" onClick={() => this.closeUserInfoModal()}>Close</a>
+                </div>
+            </Modal>
+            </div>
+        )
+    }
+
     render() {
+        var userInfoText = this.createUserInfoComponent(this.props.userInfoAction.view);
         return (
             <div>
                 <div className="panel panel-default panel-custom">
@@ -22,11 +48,11 @@ class UserInfo extends Component {
                         <div className="col-sm-6"><h3 className="panel-title">Information</h3></div>
                         <a href="#">
                             <div
-                                className="col-sm-6 update-btn text-center justify-content-center"
+                                className="btn btn-default btn-xs update-btn"
                                 onClick={this.onEditInfo}
-                            >
-                                Edit
+                            ><span className="glyphicon glyphicon-cog" /> Edit
                             </div></a>
+                            {userInfoText}
                       </div>
                     </div>
                     <div className="panel-body">
@@ -50,4 +76,14 @@ var mapDispatchToProps = (dispatch) =>{
         }
     };
 };
-export default connect(null,mapDispatchToProps) (UserInfo);
+
+var mapStateToProps = state =>{
+    return{
+        // userAction: state.userReducer,
+        // navbarAction: state.navbarReducer,
+        userInfoAction: state.userInfoReducer,
+  
+    }
+  };
+
+export default connect(mapStateToProps,mapDispatchToProps) (UserInfo);
