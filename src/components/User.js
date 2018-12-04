@@ -3,20 +3,22 @@ import './../css/user.css';
 import  {connect} from 'react-redux';
 import {onViewFollower,onViewFollowing} from '../action/userAction';
 import ListFollow from './ListFollow';
-import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
+import { VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
 import Modal from 'react-awesome-modal';
+
+
 class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visibleFollowing : false,
       visibleFollower : false
+    }
   }
-  }
-  state = {
-    isOwner: true,
-    selected: "posts"
-  };  
+  // state = {
+  //   isOwner: true,
+  //   selected: "posts"
+  // };  
 
 
   onClickFollowing = () => {
@@ -57,12 +59,21 @@ class User extends Component {
   
   
   createViewFollowingComponent = (text) =>{
+    
     return (
         <div>
-          <Modal visible={this.state.visibleFollowing} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeFollowModal()}>
+          <Modal 
+          visible={this.state.visibleFollowing} 
+          width="350" 
+          height="500" 
+          effect="fadeInUp" 
+          onClickAway={() => this.closeFollowModal()}>
           <div>
                 <h1>List of Following</h1>
-                <p>Some Contents</p>
+                <ListFollow followType="Following" followIcon="ok"/>
+                <ListFollow followType="Following" followIcon="ok"/>
+                <ListFollow followType="Following" followIcon="ok"/>
+                <ListFollow followType="Following" followIcon="ok"/>
                 <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
             </div>
         </Modal>
@@ -72,10 +83,18 @@ class User extends Component {
   createViewFollowerComponent = (text) =>{
     return (
         <div>
-          <Modal visible={this.state.visibleFollower} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeFollowModal()}>
+          <Modal 
+          visible={this.state.visibleFollower} 
+          width="350" 
+          height="500" 
+          effect="fadeInUp" 
+          onClickAway={() => this.closeFollowModal()}>
               <div>
                   <h1>List of Follower</h1>
-                  <p>Some Contents</p>
+                  <ListFollow followType="Follower" followIcon="plus"/>
+                  <ListFollow followType="Follower" followIcon="plus"/>
+                  <ListFollow followType="Follower" followIcon="plus"/>
+                  <ListFollow followType="Follower" followIcon="plus"/>
                   <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
               </div>
           </Modal>
@@ -115,7 +134,7 @@ class User extends Component {
                         <div className="col-xs-3">
                           <h5>
                             <small>TWEETS</small>
-                            <div><a href="#">15</a></div>
+                            <div>15</div>
                           </h5>
                         </div>
                         <div className="col-xs-4">
@@ -157,8 +176,8 @@ var mapDispatchToProps = (dispatch) =>{
 var mapStateToProps = state =>{
   return{
       userAction: state.userReducer,
-      navbarAction: state.navbarReducer,
-      userInfoAction: state.userInfoReducer,
+      // navbarAction: state.navbarReducer,
+      // userInfoAction: state.userInfoReducer,
 
   }
 };
