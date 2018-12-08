@@ -52,7 +52,6 @@ class PostItem extends Component {
                 height="500" 
                 effect="fadeInUp" 
                 onClickAway={() => this.closeReactModal()}>
-
                 </Modal>
             </div>
         )
