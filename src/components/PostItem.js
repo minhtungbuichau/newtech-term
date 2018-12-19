@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import  {connect} from 'react-redux';
 import {onHeartReact,onCommentReact,onShareReact} from '../action/postItemAction';
+import {HEART_REACT, COMMENT_REACT, SHARE_REACT} from './../constant/ActionTypes';
 import Modal from 'react-awesome-modal';
+import ListFollow from './ListFollow';
 
 
 class PostItem extends Component {
@@ -43,7 +45,7 @@ class PostItem extends Component {
         })
     }
 
-    createViewHeartReactComponent = () => {
+    createViewHeartReactComponent = (text) => {
         return (
             <div>
                 <Modal 
@@ -52,27 +54,35 @@ class PostItem extends Component {
                 height="500" 
                 effect="fadeInUp" 
                 onClickAway={() => this.closeReactModal()}>
+                    <div>
+                        <h1>List of Heart React</h1>
+                        <ListFollow followType="Follower" followIcon="plus"/>
+                        <ListFollow followType="Following" followIcon="ok"/>
+                        <ListFollow followType="Follower" followIcon="plus"/>
+                        <ListFollow followType="Following" followIcon="ok"/>
+                        <a href="javascript:void(0);" onClick={() => this.closeReactModal()}>Close</a>
+                    </div>
                 </Modal>
             </div>
         )
     }
 
-    createViewCommentReactComponent = () => {
+    createViewCommentReactComponent = (text) => {
         return (
             <div>
                 <Modal 
                 visible={this.state.visibleComment} 
-                width="350" 
-                height="500" 
+                width="650" 
+                height="400" 
                 effect="fadeInUp" 
                 onClickAway={() => this.closeReactModal()}>
-
+                
                 </Modal>
             </div>
         )
     }
 
-    createViewShareReactComponent = () => {
+    createViewShareReactComponent = (text) => {
         return (
             <div>
                 <Modal 
@@ -81,7 +91,14 @@ class PostItem extends Component {
                 height="500" 
                 effect="fadeInUp" 
                 onClickAway={() => this.closeReactModal()}>
-
+                    <div>
+                        <h1>Share List</h1>
+                        <ListFollow followType="Follower" followIcon="plus"/>
+                        <ListFollow followType="Following" followIcon="ok"/>
+                        <ListFollow followType="Follower" followIcon="plus"/>
+                        <ListFollow followType="Following" followIcon="ok"/>
+                        <a href="javascript:void(0);" onClick={() => this.closeReactModal()}>Close</a>
+                    </div>
                 </Modal>
             </div>
         )
@@ -90,6 +107,25 @@ class PostItem extends Component {
     
     render() {
         var postContent = "Thiệt ra mà nói, khi mình viết dòng này ra, mình cũng không hiểu tại sao nó lại xuất hiện ở đây";
+        var numberOfHeartReact = 100;
+        var numberOfCommentReact = 140;
+        var numberOfShareReact = 50;
+        
+        var viewComponent = null;
+        switch (this.props.postItemAction.view) {
+            case HEART_REACT: 
+                viewComponent = this.createViewHeartReactComponent(HEART_REACT);
+                break;
+            case COMMENT_REACT:
+                viewComponent = this.createViewCommentReactComponent(COMMENT_REACT);
+                break;
+            case SHARE_REACT: 
+                viewComponent = this.createViewShareReactComponent(SHARE_REACT);
+                break;
+            default:
+                break;
+        }
+
         return ( 
             <div className="media">
                 <a className="media-left" href="#fake">
@@ -100,12 +136,12 @@ class PostItem extends Component {
                 <div className="media-body">
                    <p>{postContent}</p>
                      <ul className="nav nav-pills nav-pills-custom">
-                        <li><a href="#"><span className="glyphicon glyphicon-heart" />100</a></li>
-                        <li><a href="#"><span className="glyphicon glyphicon-comment" />140</a></li>
-                        <li><a href="#"><span className="glyphicon glyphicon-share" />50</a></li>
-                        <li><a href="#"><span className="glyphicon glyphicon-option-horizontal" /></a></li>
+                        <li onClick={()=>this.onClickHeart()}><a href="#"><span className="glyphicon glyphicon-heart" />{numberOfHeartReact}</a></li>                 
+                        <li onClick={()=>this.onClickComment()}><a href="#"><span className="glyphicon glyphicon-comment" />{numberOfCommentReact}</a></li>
+                        <li onClick={()=>this.onClickShare()}><a href="#"><span className="glyphicon glyphicon-share" />{numberOfShareReact}</a></li>
                     </ul>
                 </div>
+                {viewComponent}
             </div>
         );
     }
@@ -125,4 +161,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect(null,mapDispatchToProps)(PostItem);
+const mapStateToProps = (state, ownProps) => {
+    return {
+        postItemAction: state.postItemReducer
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(PostItem);

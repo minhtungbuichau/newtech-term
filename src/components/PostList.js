@@ -8,7 +8,7 @@ class PostList extends Component {
                     <div className="panel-heading">
                       {/* <div class="media">
                             <a class="media-left" href="#fake">
-                                <img alt="" class="media-object img-rounded" src="http://placehold.it/35x35">
+                                <img class="media-object img-rounded" src="http://placehold.it/35x35">
                             </a>
                             <div class="media-body">
                                 <div class="form-group has-feedback">
