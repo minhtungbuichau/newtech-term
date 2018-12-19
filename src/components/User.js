@@ -6,7 +6,6 @@ import ListFollow from './ListFollow';
 import { VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
 import Modal from 'react-awesome-modal';
 
-
 class User extends Component {
   constructor(props) {
     super(props);
@@ -142,21 +141,18 @@ class User extends Component {
                             <small>FOLLOWING</small>
                             {/* <div onClick={() =>this.onClickFollowing()}><a href="#">251</a></div> */}
                             <div onClick={() => this.onClickFollowing()}><a href="#">251</a></div>
-                            
-                            {viewComponent}
                           </h5>
                         </div>
                         <div className=" col-xs-5">
                           <h5>
                             <small>FOLLOWERS</small>
                             <div onClick={() => this.onClickFollower()}><a href="#">251</a></div>
-                        
-                            {viewComponent}
                           </h5>
                         </div>
                       </div>
                     </div>
-                  </div>      
+                  </div>   
+                  {viewComponent}   
             </div>
         );
     }
