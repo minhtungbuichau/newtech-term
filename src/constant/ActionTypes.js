@@ -6,3 +6,5 @@ export const EDIT_USER_INFO  = 'EDIT_USER_INFO';
 export const HEART_REACT = 'HEART_REACT';
 export const COMMENT_REACT = 'COMMENT_REACT';
 export const SHARE_REACT = 'SHARE_REACT';
+export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const LOGIN = 'LOGIN';

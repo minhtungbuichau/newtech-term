@@ -19,3 +19,9 @@ export const onViewFollower = () => {
         type: ActionTypes.VIEW_FOLLOWER
     };
 };
+
+export const onEditProfile = () => {
+    return {
+        type: ActionTypes.EDIT_PROFILE
+    };
+}

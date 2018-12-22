@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import './../css/user.css';
 import  {connect} from 'react-redux';
-import {onViewFollower,onViewFollowing} from '../action/userAction';
+import {onViewFollower,onViewFollowing, onEditProfile} from '../action/userAction';
 import ListFollow from './ListFollow';
-import { VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
+import { VIEW_FOLLOWER, VIEW_FOLLOWING, EDIT_PROFILE} from "../constant/ActionTypes";
 import Modal from 'react-awesome-modal';
+
+const username = "Bùi Châu Minh Tùng";
+
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visibleFollowing : false,
-      visibleFollower : false
+      visibleFollower : false,
+      visibleEditProfile: false
     }
   }
+  
   // state = {
   //   isOwner: true,
   //   selected: "posts"
@@ -42,6 +47,16 @@ class User extends Component {
       });
   };
 
+  onEditProfile = () => {
+    // this.setState({
+    //     selected: "following"
+    // });
+    this.props.onEditProfile();
+    this.setState({
+      visibleEditProfile : true
+    });
+  };
+
   // openModal = ()=> {
   //   this.setState({
   //     visibleFollower : true, 
@@ -52,13 +67,12 @@ class User extends Component {
   closeFollowModal = () => {
       this.setState({
         visibleFollower : false,
-        visibleFollowing : false  
+        visibleFollowing : false,
+        visibleEditProfile: false
       });
   }
   
-  
   createViewFollowingComponent = (text) =>{
-    
     return (
         <div>
           <Modal 
@@ -100,10 +114,51 @@ class User extends Component {
         </div>
     )
   };
+
+  createViewEditProfile = (text) => {
+    const inputForm = {
+      float: "left"
+  }
+  
+  const form = {
+      marginLeft: "5vh",
+      marginRight: "5vh"
+  }
+  
+  const closeBtn = {
+      color: "white",
+      marginLeft: "3vh"
+  }
+    return (
+      <div>
+         <Modal 
+          visible={this.state.visibleEditProfile} 
+          width="350" 
+          height="500" 
+          effect="fadeInUp" 
+          onClickAway={() => this.closeFollowModal()}>
+              <div>
+              <h1>Edit Profile</h1>
+                   <form style={form}>
+                        <div className="form-group">
+                            <label style={inputForm} htmlFor="username" ><span className="glyphicon glyphicon-user"  /> Username:</label>
+                            <input type="text" className="form-control" id="username" defaultValue={username}/>
+                        </div>
+
+                        <button type="submit" className="btn btn-primary">Update</button>
+                        
+                    </form>
+                  <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
+              </div>
+          </Modal>
+      </div>
+    )
+  }
+
   render() {
       const avatarUrl = "https://media.tintucvietnam.vn/uploads/medias/2018/01/28/1024x1024/mot-dem-khong-ngu-vi-nhung-hinh-anh-tuyet-dep-nay-cua-tran-chung-ket-u23-chau-a-bb-baaadedKLx.jpg?v=1517078417042";
       // const { isOwner } = this.state;
-      const username = "Bùi Châu Minh Tùng";
+      
       var viewComponent = null;
         switch (this.props.userAction.view) {
             case VIEW_FOLLOWER:
@@ -112,6 +167,10 @@ class User extends Component {
                 break;
             case VIEW_FOLLOWING:
                 viewComponent = this.createViewFollowingComponent(VIEW_FOLLOWING);
+                console.log(viewComponent);
+                break;
+            case EDIT_PROFILE:
+                viewComponent = this.createViewEditProfile(EDIT_PROFILE);
                 console.log(viewComponent);
                 break;
         }
@@ -128,22 +187,17 @@ class User extends Component {
                     <div className="avatar-img">
                         <img href="#" className="img-thumbnail" src={avatarUrl}/>
                     </div>
-                      <div className="username">{username}</div>
+                      <a><div className="username" onClick={() => this.onEditProfile()}>{username}</div></a>
                       <div className="row">
-                        <div className="col-xs-3">
-                          <h5>
-                            <small>TWEETS</small>
-                            <div>15</div>
-                          </h5>
-                        </div>
-                        <div className="col-xs-4">
+                       
+                        <div className="col-xs-6">
                           <h5>
                             <small>FOLLOWING</small>
                             {/* <div onClick={() =>this.onClickFollowing()}><a href="#">251</a></div> */}
                             <div onClick={() => this.onClickFollowing()}><a href="#">251</a></div>
                           </h5>
                         </div>
-                        <div className=" col-xs-5">
+                        <div className=" col-xs-6">
                           <h5>
                             <small>FOLLOWERS</small>
                             <div onClick={() => this.onClickFollower()}><a href="#">251</a></div>
@@ -165,7 +219,11 @@ var mapDispatchToProps = (dispatch) =>{
         },
         onViewFollowing: () =>{
             dispatch(onViewFollowing())
+        },
+        onEditProfile: () => {
+          dispatch (onEditProfile());
         }
+        
     }
 };
 
