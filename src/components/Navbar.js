@@ -8,7 +8,8 @@ class Navbar extends Component {
         super(props);
         this.state = {
             // contentPost: 'pham anh tuan',
-            visible: false
+            visible: false,
+            visibleShowTransaction: false
         };
     }
 
@@ -17,16 +18,23 @@ class Navbar extends Component {
           this.props.onWriteTweet();
           this.setState({
             visible : true
+
+            } );
+    };
+
+    onShowTransaction = () =>{
+        //   this.props.onWriteTweet(this.state.contentPost);
+          this.props.onShowTransaction();
+          this.setState({
+            visibleShowTransaction : true
             } );
     };
     closeTweetModal() {
         this.setState({
-            visible : false
+            visible : false,
+            visibleShowTransaction: false
         });
     }
-
-
-    
 
     createTweetComponent = (text) =>{
         return (
@@ -56,7 +64,7 @@ class Navbar extends Component {
                         <a href="#fake"><span className="glyphicon glyphicon-home" /> Home</a>
                         </li>
                         <li>
-                        <a href="#fake"><span className="glyphicon glyphicon-bell" /> Notifications</a>
+                        <a href="#fake"><span className="glyphicon glyphicon-bell" /> Transactions</a>
                         </li>
                         <li>
                         <a href="#fake"><span className="glyphicon glyphicon-envelope" /> Messages</a>

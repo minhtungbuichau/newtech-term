@@ -25,7 +25,7 @@ class Login extends Component {
                   <input type="text" className="form-control" id="inputSecretKey" placeholder="Secret key "/>
                 </div>
                 <button type="submit" className="btn btn-primary" onClick= {() => this.getSecretKey()}>Login</button>
-              </form>
+              </form>z
             </div>
           </div>
           </div>
