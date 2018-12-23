@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './../css/login.css';
 import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
+import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
 
 class Login extends Component {
@@ -24,7 +25,7 @@ class Login extends Component {
                 <div className="form-group">
                   <input type="text" className="form-control" id="inputSecretKey" placeholder="Secret key "/>
                 </div>
-                <button type="submit" className="btn btn-primary" onClick= {() => this.getSecretKey()}>Login</button>
+                <button type="button" className="btn btn-primary" onClick= {this.getSecretKey}>Login</button>
               </form>
             </div>
           </div>
@@ -34,10 +35,11 @@ class Login extends Component {
         );
     }
 
-    getSecretKey = () =>  {
-        var key = document.getElementById('inputSecretKey').value;
-        console.log(key);
-        alert (key);
+    getSecretKey = (e) =>  {
+        e.preventDefault();
+        var secretKey = document.getElementById('inputSecretKey').value;
+        accoutLogin(secretKey);
+
     }
 
 }
