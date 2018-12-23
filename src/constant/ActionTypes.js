@@ -8,3 +8,4 @@ export const COMMENT_REACT = 'COMMENT_REACT';
 export const SHARE_REACT = 'SHARE_REACT';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
 export const LOGIN = 'LOGIN';
+export const SHOW_TRANSACTION = 'SHOW_TRANSACTION';
