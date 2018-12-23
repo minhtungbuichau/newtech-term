@@ -31,7 +31,7 @@ class UserInfo extends Component {
         this.setState({
           visibleEditInfo : false
         });
-    }
+    };
 
     createUserInfoComponent = (text) => {
         const inputForm = {

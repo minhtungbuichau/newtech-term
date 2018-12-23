@@ -1,5 +1,5 @@
 const { Keypair } = require('stellar-base');
-const { createHash } = require('crypto')
+const { createHash } = require('crypto');
 
 const key = Keypair.random();
 console.log('Secret key:', key.secret());

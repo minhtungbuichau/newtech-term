@@ -8,8 +8,13 @@ import './../css/profile.css';
 import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import {connect} from 'react-redux';
+import {accoutLogin} from '../server-apis/account-api'
 import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
 import userInfoReducer from "../reducer/userInfoReducer";
+import decode from '../transaction/index'
+
+
+
 
 class Home extends Component {
 
@@ -17,6 +22,12 @@ class Home extends Component {
         super(props);
 
     }
+
+    //created on 09/12/2018
+    //function for test read user account from server
+    onReadAccountData = () =>{
+       accoutLogin('GBH6HEN6KMDTI3TDD4EINUYJCG3AS6N5YROE2XNBETY2SSOWB3CYRH7S');
+    };
     render() {  
         //navbar
 
@@ -27,6 +38,10 @@ class Home extends Component {
 
         return (
             <div>
+                <button
+                    onClick={this.onReadAccountData}>
+                    BTN LOAD DATA
+                </button>
             <Navbar/>
             <div className="container">
                
