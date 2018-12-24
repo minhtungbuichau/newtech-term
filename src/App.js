@@ -8,9 +8,9 @@ class App extends Component {
 
     return (
       <div className="App">
-        {/* <Home/> */}
+        <Home/>
         {/* <Login/> */}
-        <TransactionHistory/>
+        {/* <TransactionHistory/> */}
       </div>
     );
   }
