@@ -8,7 +8,7 @@ import './../css/profile.css';
 import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import {connect} from 'react-redux';
-import {accoutLogin} from '../server-apis/account-api'
+import {accoutLogin, getListFollowers, getListFollowings} from '../server-apis/account-api'
 import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
 import userInfoReducer from "../reducer/userInfoReducer";
 import decode from '../transaction/index'
@@ -26,8 +26,11 @@ class Home extends Component {
 
     //created on 09/12/2018
     //function for test read user account from server
-    onReadAccountData = () =>{
-       getUsers();
+    onReadAccountData = async () =>{
+      //let listFollowers = await  getListFollowers('GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI');
+      //console.log(listFollowers);
+        let listFollowings = await  getListFollowings('GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI');
+        console.log(listFollowings);
     };
     render() {  
         //navbar
