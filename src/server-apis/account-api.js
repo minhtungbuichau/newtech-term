@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { Keypair } = require('stellar-base');
-//const transaction = require('../lib/transaction/index');
+const transaction = require('../lib/transaction/index');
 const MAIN_SERVER_URL = "http://localhost:3000";
 const base32 = require('base32.js');
 const vstruct = require('varstruct');

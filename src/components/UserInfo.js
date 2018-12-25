@@ -118,6 +118,15 @@ class UserInfo extends Component {
                       </ul>
                     </div>
                   </div>
+                  <div className="well well-sm">
+                    <p>Faculty of Infomation Technology</p>
+                    <p>New Technology Course</p>
+                    <p>Team Member:</p>
+                    <ul className="team-member">
+                      <li>PHAM Anh Tuan - 1512639</li>
+                      <li>BUI CHAU Minh Tung - 1512651</li>
+                    </ul>
+                  </div>
             </div>
         );
     }

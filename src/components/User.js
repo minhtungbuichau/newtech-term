@@ -241,7 +241,7 @@ class User extends Component {
                                 onChange={this.handleChange}/>
                         </div>
 
-                        <button  id="btn-update-name" type="button" className="btn btn-primary"  onClick={this.onUpdateProfile}>Update</button>
+                        <button href="javascript:void(0);" id="btn-update-name" type="button" className="btn btn-primary"  onClick={this.onUpdateProfile}>Update</button>
                         
                     </form>
                   <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
@@ -283,7 +283,7 @@ class User extends Component {
                     <div className="avatar-img">
                         <img href="#" className="img-thumbnail" src={avatarUrl}/>
                     </div>
-                      <a><div className="username" onClick={() => this.onEditProfile()}>{account? account.displayName: 'NAME NULL'}</div></a>
+                      <a><div className="username" onClick={() => this.onEditProfile()}>{account && account.displayName != ''? account.displayName: 'NAME NULL'}</div></a>
                       <div className="row">
                        
                         <div className="col-xs-6">

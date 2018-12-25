@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import  {connect} from 'react-redux';
-import  {onWriteTweet} from './../action/navBarAction';
-import {onShowTransaction} from './../action/transactionAction';
+import  {onWriteTweet, onPayment, onShowTransaction} from './../action/navBarAction';
 import TransactionHistory from './TransactionHistory';
 import Modal from 'react-awesome-modal';
-import { SHOW_TRANSACTION } from '../constant/ActionTypes';
+import { SHOW_TRANSACTION, PAYMENT, WRITE_POST } from '../constant/ActionTypes';
 class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // contentPost: 'pham anh tuan',
             visible: false,
-            visibleShowTransaction: false
+            visibleShowTransaction: false,
+            visibleShowPayment: false,
+            visibleTweet: false
         };
     }
 
@@ -20,9 +21,18 @@ class Navbar extends Component {
         //   this.props.onWriteTweet(this.state.contentPost);
           this.props.onWriteTweet();
           this.setState({
-            visible : true
+            visibleTweet: true
             } );
     };
+
+    onPayment = () => {
+    
+        this.props.onPayment();
+        this.setState({
+            visibleShowPayment: true   
+        })
+    
+    }
 
     onShowTransaction = () =>{
         //   this.props.onWriteTweet(this.state.contentPost);
@@ -34,18 +44,29 @@ class Navbar extends Component {
     closeTweetModal() {
         this.setState({
             visible : false,
-            visibleShowTransaction: false
+            visibleShowTransaction: false,
+            visibleShowPayment: false,
+            visibleTweet: false
         });
     }
 
     createTweetComponent = (text) =>{
+        const form = {
+            marginLeft: "3vh",
+            marginRight: "3vh"
+        }
         return (
             <div>
-              <Modal visible={this.state.visible} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+              <Modal visible={this.state.visibleTweet} width="600" height="300" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
                   <div>
-                      <h1>Tweet</h1>
-                      <p>Some Contents</p>
-                      <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
+                    <form style={form}>
+                        <div className="form-group">
+                            <h1>Post</h1>
+                            <textarea className="form-control" rows="5" id="comment"></textarea>
+                        </div>
+                            <button type="submit" className="btn btn-primary">Post</button>
+                    </form>
+                    <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
                   </div>
               </Modal>
             </div>
@@ -53,10 +74,13 @@ class Navbar extends Component {
       };
 
       createShowTransactionComponent = (text) =>{
+        const transactionList = {
+            overflow: "scroll"
+        }
         return (
             <div>
-              <Modal visible={this.state.visibleShowTransaction} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
-                  <div>
+              <Modal visible={this.state.visibleShowTransaction} width="700" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+                  <div style ={transactionList}>
                       <h1>List of Transactions</h1>
                       <TransactionHistory/>
                       <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
@@ -66,17 +90,72 @@ class Navbar extends Component {
         )
       };
 
+      createPayment = (text) => {
+        const inputForm = {
+            float: "left"
+        }
+        
+        const form = {
+            marginLeft: "5vh",
+            marginRight: "5vh"
+        }
+        var publicKey = "GBH6HEN6KMDTI3TDD4EINUYJCG3AS6N5YROE2XNBETY2SSOWB3CYRH7S";
+          return(
+              <div>
+                  <Modal visible={this.state.visibleShowPayment} width="600" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+                    <div>
+                        <h1>Payment</h1>
+                            <form style={form}>
+                                <div className="form-group">
+                                    <label style={inputForm} htmlFor="sender" >Sender:</label>
+                                    <input type="text" className="form-control" defaultValue={publicKey}/>
+                                </div>
+                                <div className="form-group">
+                                    <label style={inputForm} htmlFor="amout">Amount:</label>
+                                    <input type="text" className="form-control"   />
+                                </div>
+                                <div className="form-group">
+                                    <label style={inputForm} htmlFor="receiver">Receiver:</label>
+                                    <select className="form-control">
+                                        <option>GLKAJFLKWJKJWENLKWFSKDLV</option>
+                                        <option>GOADOPQIOPQWRZXAASDADAVX</option>
+                                        <option>GASDJKFHKFGSDBFWEFMNBMNB</option>
+                                        <option>GPUYITYUWERNVSHJDGIUHVJH</option>
+                                    </select>
+                                    {/* <input type="text" className="form-control"   /> */}
+                                </div>
+                                <div className="form-group">
+                                    <label style={inputForm} htmlFor="message">Message:</label>
+                                    <input type="text" className="form-control"  />
+                                </div>
+                                <button type="submit" className="btn btn-primary">Send</button>
+                               
+                            </form>
+                        <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
+                    </div>
+                </Modal>
+              </div>
+          )
+      }
+
     render() {
        
         //var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
-        var viewTransaction= null;
-            //
-            // switch (this.props.showTransactionAction.view) {
-            //     case SHOW_TRANSACTION:
-            //         viewTransaction = this.createShowTransactionComponent(SHOW_TRANSACTION);
-            //         console.log(viewTransaction);
-            //         break;
-            // }
+        var viewNavbarComponent = null;
+        //alert(this.props.navbarAction.action);
+    
+        switch (this.props.navbarAction.action) {
+            case PAYMENT:
+                viewNavbarComponent = this.createPayment(PAYMENT);
+                break;
+            case SHOW_TRANSACTION:
+                viewNavbarComponent = this.createShowTransactionComponent(SHOW_TRANSACTION);
+                break;
+            case WRITE_POST:
+                viewNavbarComponent = this.createTweetComponent(WRITE_POST);
+                break;
+            
+        }
         return (
             <div>
                 <div className="navbar navbar-default navbar-static-top">
@@ -84,25 +163,21 @@ class Navbar extends Component {
                     <div className="navbar-collapse navbar-collapse-1 collapse" aria-expanded="true">
                     <ul className="nav navbar-nav">
                         <li className="active">
-                        <a href="#fake"><span className="glyphicon glyphicon-home" /> Home</a>
+                        <a href="#fake"onClick={() => this.onWriteTweet()}><span className="glyphicon glyphicon-home" /> Home</a>
                         </li>
                         <li>
-                        <a href="#fake"><span className="glyphicon glyphicon-bell" onClick={() => this.onShowTransaction()}/> Transactions</a>
-                        {viewTransaction}
+                        <a href="#fake" onClick={() => this.onShowTransaction()}><span className="glyphicon glyphicon-usd" /> Transactions</a>
+                        {viewNavbarComponent}
                         </li>
                         <li>
-                        <a href="#fake"><span className="glyphicon glyphicon-envelope" /> Messages</a>
+                        <a href="#" onClick={()=>this.onPayment()}><span className="glyphicon glyphicon-transfer" /> Payment</a>
                         </li>
                     </ul>
                     <div className="navbar-form navbar-right">
-                        {/* <div className="form-group has-feedback">
-                        <input type="text" className="form-control-nav" id="search" aria-describedby="search1" />
-                        <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" />
-                        </div> */}
                         <button className="btn btn-primary"
                                 type="submit"
                                 aria-label="Left Align"
-                                onClick={this.onWriteTweet}
+                                onClick={() =>this.onWriteTweet()}
                         >
                         {/* {tweetContent} */}
                             <span className="glyphicon glyphicon-pencil" aria-hidden="true"> </span> Tweet
@@ -118,11 +193,14 @@ class Navbar extends Component {
 
 var mapDispatchToProps = (dispatch) =>{
   return{
-      onWriteTweet: (postContent) =>{
-          dispatch(onWriteTweet(postContent));
+      onWriteTweet: () =>{
+          dispatch(onWriteTweet());
       },
       onShowTransaction: () => {
         dispatch(onShowTransaction());  
+      },
+      onPayment: () => {
+        dispatch(onPayment());  
       }
   };
 };

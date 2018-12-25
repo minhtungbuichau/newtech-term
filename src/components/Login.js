@@ -4,7 +4,6 @@ import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
-
 import {onWriteTweet} from "../action/navBarAction";
 import {onLogin} from  '../action/loginAction';
 import {Redirect} from  'react-router-dom'
@@ -50,14 +49,6 @@ class Login extends Component {
 
             </div>
             </div>
-        );
-    }
-
-    redirectHome = () => {
-        return (
-            <Router>
-                <Route exact path="/home" component={Home}/>
-            </Router>
         );
     }
 

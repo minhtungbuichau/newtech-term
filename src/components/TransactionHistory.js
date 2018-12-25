@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './../css/transaction.css'
 class TransactionHistory extends Component {
     render() {
+       
         return (
             <div>
                 <table id="customers">
@@ -19,6 +20,7 @@ class TransactionHistory extends Component {
                         <td>TungBCM</td>
                         <td>I love you</td>
                     </tr>
+                    
                 </table>
             </div>
         );
