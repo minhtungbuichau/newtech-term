@@ -24,6 +24,7 @@ class App extends Component {
                       <Route path="/home" component={Home}/>
               </div>
         </BrowserRouter>
+
     );
   }
 }
