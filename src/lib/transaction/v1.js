@@ -134,4 +134,4 @@ function decode(data) {
   };
 }
 
-module.exports = { encode, decode };
+export { encode, decode };

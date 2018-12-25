@@ -4,7 +4,10 @@ import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
-
+import Home from './Home';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './../css/bootstrap.css';
+var viewComponent =null;
 class Login extends Component {
     render() {
         return (
@@ -21,6 +24,7 @@ class Login extends Component {
                         <h2>Login</h2>
                         <p>Please enter your secret key</p>
                       </div>
+
                       <form id="Login">
                         <div className="form-group">
                           <input type="text" className="form-control" id="inputSecretKey" placeholder="Secret key "/>
@@ -32,17 +36,38 @@ class Login extends Component {
 
             </div>
             </div>
-
         );
     }
 
-    getSecretKey = (e) =>  {
-        e.preventDefault();
-        var secretKey = document.getElementById('inputSecretKey').value;
-        accoutLogin(secretKey);
-
+    redirectHome = () => {
+        return (
+            <Router>
+                <Route exact path="/home" component={Home}/>
+            </Router>
+        );
     }
 
+    getSecretKey = async (e) =>  {
+        e.preventDefault();
+        var secretKey = document.getElementById('inputSecretKey').value;
+        let result = await accoutLogin(secretKey);
+        if(result == -1 || result.data.status == 0){
+            alert('Wrong secret key. Please input again.');
+        }
+        else{
+            //success
+            if(result.data.status == 1) {
+
+            }
+        }
+    }
+
+}
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        prop: state.prop
+    }
 }
 
 export default Login;

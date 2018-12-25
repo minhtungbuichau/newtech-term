@@ -58,4 +58,4 @@ function hash(tx) {
     .toUpperCase();
 }
 
-module.exports = { encode, decode, verify, sign, hash };
+export { encode, decode, verify, sign, hash };

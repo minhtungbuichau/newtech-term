@@ -4,7 +4,7 @@ const initialState = {}
 const loginReducer = (state = initialState, action) => {
     return {
         ...state,
-        key: action.type
+        key: action.type,
     };
 };
 

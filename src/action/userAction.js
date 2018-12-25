@@ -14,7 +14,6 @@ export const onViewFollowing = () => {
 
 export const onViewFollower = () => {
 
-    //alert('view follower button click');
     return {
         type: ActionTypes.VIEW_FOLLOWER
     };
