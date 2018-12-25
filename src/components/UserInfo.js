@@ -13,7 +13,8 @@ class UserInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visibleEditInfo : false
+            visibleEditInfo : false,
+            secretKey: null,
         }
         
     }
@@ -21,6 +22,7 @@ class UserInfo extends Component {
    
 
     onEditInfo = () =>{
+        alert(this.state.secretKey);
         this.props.onEditInfo();
         this.setState({
             visibleEditInfo : true
@@ -83,9 +85,14 @@ class UserInfo extends Component {
             </Modal>
             </div>
         )
-    }
+    };
 
     render() {
+        if(this.state.secretKey === null){
+            this.setState({
+                secretKey: this.props.secretKey,
+            })
+        }
         var userInfoText = this.createUserInfoComponent(this.props.userInfoAction.view);
         return (
             <div>
@@ -129,6 +136,7 @@ var mapStateToProps = state =>{
         // userAction: state.userReducer,
         // navbarAction: state.navbarReducer,
         userInfoAction: state.userInfoReducer,
+        secretKey: state.loginReducer.secretKey,
   
     }
   };

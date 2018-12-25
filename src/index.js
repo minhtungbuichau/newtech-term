@@ -7,6 +7,10 @@ import  {createStore} from  'redux';
 import rootReducer from '././reducer/rootReducer'
 import  {Provider} from  'react-redux';
 import {firebaseConnect} from './constant/firebaseConnect';
+import Login from "./components/Login";
+import Home from "./components/Home"
+var {Router,Route, hashHistory, IndexRoute} =  require('react-router');
+var {HashRouter}  = require('react-router-dom');
 
 const store = createStore(
     rootReducer,
@@ -16,7 +20,7 @@ console.log(firebaseConnect);//check firebase run
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
+         <App/>
     </Provider>
     , document.getElementById('root'));
 

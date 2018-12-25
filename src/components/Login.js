@@ -4,12 +4,26 @@ import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
-import Home from './Home';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './../css/bootstrap.css';
-var viewComponent =null;
+
+import {onWriteTweet} from "../action/navBarAction";
+import {onLogin} from  '../action/loginAction';
+import {Redirect} from  'react-router-dom'
 class Login extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLogin: false,
+        }
+    }
+
     render() {
+
+        if(this.state.isLogin === true){
+            return(
+                <Redirect to="/home"/>
+            );
+        }
         return (
             <div>
                 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
@@ -49,14 +63,27 @@ class Login extends Component {
 
     getSecretKey = async (e) =>  {
         e.preventDefault();
+
         var secretKey = document.getElementById('inputSecretKey').value;
-        let result = await accoutLogin(secretKey);
-        if(result == -1 || result.data.status == 0){
-            alert('Wrong secret key. Please input again.');
-        }
-        else{
-            //success
-            if(result.data.status == 1) {
+
+        let response = await accoutLogin(secretKey);
+        console.log(response);
+        if(response && response.data){
+            let status = response.data.status;
+
+
+            //login successfully
+            alert(status);
+            if(status === 1){
+                this.props.onLogin(secretKey);
+                this.setState({
+                    isLogin: true,
+                });
+            }
+
+            //login failed
+            else{
+                //none
 
             }
         }
@@ -64,10 +91,13 @@ class Login extends Component {
 
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        prop: state.prop
-    }
-}
+var mapDispatchToProps = (dispatch) =>{
+    return{
+        onLogin: (secretKey) =>{
+            dispatch(onLogin(secretKey));
+        }
+    };
+};
 
-export default Login;
+
+export default connect(null,mapDispatchToProps)(Login);
