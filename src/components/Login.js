@@ -4,10 +4,10 @@ import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
+
 import {onWriteTweet} from "../action/navBarAction";
 import {onLogin} from  '../action/loginAction';
 import {Redirect} from  'react-router-dom'
-
 class Login extends Component {
 
     constructor(props) {
@@ -38,6 +38,7 @@ class Login extends Component {
                         <h2>Login</h2>
                         <p>Please enter your secret key</p>
                       </div>
+
                       <form id="Login">
                         <div className="form-group">
                           <input type="text" className="form-control" id="inputSecretKey" placeholder="Secret key "/>
@@ -49,7 +50,14 @@ class Login extends Component {
 
             </div>
             </div>
+        );
+    }
 
+    redirectHome = () => {
+        return (
+            <Router>
+                <Route exact path="/home" component={Home}/>
+            </Router>
         );
     }
 
@@ -57,6 +65,7 @@ class Login extends Component {
         e.preventDefault();
 
         var secretKey = document.getElementById('inputSecretKey').value;
+
         let response = await accoutLogin(secretKey);
         console.log(response);
         if(response && response.data){
@@ -74,6 +83,7 @@ class Login extends Component {
             //login failed
             else{
                 //none
+
             }
         }
     }
