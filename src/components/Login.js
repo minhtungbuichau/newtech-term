@@ -64,7 +64,6 @@ class Login extends Component {
 
 
             //login successfully
-            alert(status);
             if(status === 1){
                 this.props.onLogin(secretKey);
                 this.setState({

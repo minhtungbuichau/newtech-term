@@ -1,20 +1,52 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import PostItem from './PostItem';
+import {getAccountInfo, getAccountInfoByPublicKey} from "../server-apis/account-api";
+import ListFollow from "./ListFollow";
 class PostList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             account: null,
+            posts: [],
+
         }
     }
 
     componentDidMount(){
-
+        this.readAccountInfo();
     }
 
+    readAccountInfo = async () =>{
+        let account = await getAccountInfo(this.props.secretKey);
+        var addresses = [];
+        addresses.push(account.public_key);
+        for(var index = 0; index < account.followings.length; index++){
+            addresses.push(account.followings[index].address);
+        }
 
+        console.log(addresses);
+
+        var posts = [];
+        for (var index = 0; index < addresses.length; index++) {
+            let address = addresses[index];
+            let account = await getAccountInfoByPublicKey(address);
+            for(var postIndex = 0; postIndex < account.posts.length; postIndex++) {
+                var content = account.posts[postIndex].content.text;
+                posts = posts.concat(<PostItem
+                    key={postIndex}
+                    public_key={account.public_key}
+                    name={account.displayName}
+                    content={content}/>)
+            }
+        }
+
+        this.setState({
+            account: account,
+            posts: posts,
+        })
+    };
 
     render() {
         return (
@@ -36,11 +68,7 @@ class PostList extends Component {
                         </div> */}
                     </div>
                     <div className="panel-body">
-                    <PostItem/>
-                    <PostItem/>
-                    <PostItem/>
-                    <PostItem/>
-                    <PostItem/>    
+                        {this.state.posts}
                     </div>
                   </div>
             </div>

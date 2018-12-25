@@ -12,7 +12,7 @@ class PostItem extends Component {
         this.state = {
             visibleHeart: false,
             visibleComment: false,
-            visibleShare: false
+            visibleShare: false,
         }
     }
 
@@ -126,6 +126,9 @@ class PostItem extends Component {
                 break;
         }
 
+        const accountName = {
+            textAlign: "left"
+        };
         return ( 
             <div className="media">
                 <a className="media-left" href="#fake">
@@ -134,7 +137,8 @@ class PostItem extends Component {
                     src="http://placehold.it/50x50" />
                 </a>
                 <div className="media-body">
-                   <p>{postContent}</p>
+                    <h5 style={accountName}>{this.props.name}</h5>
+                   <p>{this.props.content}</p>
                      <ul className="nav nav-pills nav-pills-custom">
                         <li onClick={()=>this.onClickHeart()}><a href="#"><span className="glyphicon glyphicon-heart" />{numberOfHeartReact}</a></li>                 
                         <li onClick={()=>this.onClickComment()}><a href="#"><span className="glyphicon glyphicon-comment" />{numberOfCommentReact}</a></li>

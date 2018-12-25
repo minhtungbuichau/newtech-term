@@ -5,7 +5,7 @@ import {onViewFollower,onViewFollowing, onEditProfile} from '../action/userActio
 import ListFollow from './ListFollow';
 import { VIEW_FOLLOWER, VIEW_FOLLOWING, EDIT_PROFILE} from "../constant/ActionTypes";
 import Modal from 'react-awesome-modal';
-import {getAccountInfo, getAccountInfoByPublicKey} from '../server-apis/account-api'
+import {getAccountInfo, getAccountInfoByPublicKey, onUpdateAccountName} from '../server-apis/account-api'
 
 const username = "Bùi Châu Minh Tùng";
 
@@ -17,8 +17,10 @@ class User extends Component {
       visibleFollowing : false,
       visibleFollower : false,
       visibleEditProfile: false,
+        accoutName: '',
         secretKey: null,
         account: null,
+        name: '',
         followings: {
             isShow: false,
             data: [],
@@ -160,6 +162,14 @@ class User extends Component {
         )
   };
 
+  handleChange = (event) => {
+      let name = event.target.name;
+      let value = event.target.value;
+
+      this.setState({
+          [name]: value,
+      });
+  };
   createViewFollowerComponent = (text) =>{
 
       this.loadListFollowers();
@@ -179,6 +189,18 @@ class User extends Component {
           </Modal>
         </div>
     )
+  };
+
+  onUpdateProfile = async (e) => {
+      e.preventDefault();
+      var newName = this.state.accoutName;
+      await onUpdateAccountName(this.props.secretKey, newName);
+          this.state.account.displayName = newName;
+          this.setState({
+              account: this.state.account,
+          })
+
+
   };
 
   createViewEditProfile = (text) => {
@@ -210,10 +232,16 @@ class User extends Component {
                    <form style={form}>
                         <div className="form-group">
                             <label style={inputForm} htmlFor="username" ><span className="glyphicon glyphicon-user"  /> Username:</label>
-                            <input type="text" className="form-control" id="username" defaultValue={username}/>
+                            <input
+                                name="accoutName"
+                                type="text"
+                                className="form-control"
+                                id="username"
+                                value={this.state.accoutName}
+                                onChange={this.handleChange}/>
                         </div>
 
-                        <button type="submit" className="btn btn-primary">Update</button>
+                        <button  id="btn-update-name" type="button" className="btn btn-primary"  onClick={this.onUpdateProfile}>Update</button>
                         
                     </form>
                   <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>

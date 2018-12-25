@@ -70,13 +70,13 @@ class Navbar extends Component {
        
         //var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
         var viewTransaction= null;
-
-            switch (this.props.showTransactionAction.view) {
-                case SHOW_TRANSACTION:
-                    viewTransaction = this.createShowTransactionComponent(SHOW_TRANSACTION);
-                    console.log(viewTransaction);
-                    break;
-            }
+            //
+            // switch (this.props.showTransactionAction.view) {
+            //     case SHOW_TRANSACTION:
+            //         viewTransaction = this.createShowTransactionComponent(SHOW_TRANSACTION);
+            //         console.log(viewTransaction);
+            //         break;
+            // }
         return (
             <div>
                 <div className="navbar navbar-default navbar-static-top">
