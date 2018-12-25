@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import  {connect} from 'react-redux';
 import  {onWriteTweet} from './../action/navBarAction';
+import {onShowTransaction} from './../action/transactionAction';
+import TransactionHistory from './TransactionHistory';
 import Modal from 'react-awesome-modal';
+import { SHOW_TRANSACTION } from '../constant/ActionTypes';
 class Navbar extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +21,6 @@ class Navbar extends Component {
           this.props.onWriteTweet();
           this.setState({
             visible : true
-
             } );
     };
 
@@ -50,10 +52,31 @@ class Navbar extends Component {
         )
       };
 
+      createShowTransactionComponent = (text) =>{
+        return (
+            <div>
+              <Modal visible={this.state.visibleShowTransaction} width="400" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+                  <div>
+                      <h1>List of Transactions</h1>
+                      <TransactionHistory/>
+                      <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
+                  </div>
+              </Modal>
+            </div>
+        )
+      };
+
     render() {
        
-        var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
-        
+        //var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
+        var viewTransaction= null;
+
+            switch (this.props.showTransactionAction.view) {
+                case SHOW_TRANSACTION:
+                    viewTransaction = this.createShowTransactionComponent(SHOW_TRANSACTION);
+                    console.log(viewTransaction);
+                    break;
+            }
         return (
             <div>
                 <div className="navbar navbar-default navbar-static-top">
@@ -64,7 +87,8 @@ class Navbar extends Component {
                         <a href="#fake"><span className="glyphicon glyphicon-home" /> Home</a>
                         </li>
                         <li>
-                        <a href="#fake"><span className="glyphicon glyphicon-bell" /> Transactions</a>
+                        <a href="#fake"><span className="glyphicon glyphicon-bell" onClick={() => this.onShowTransaction()}/> Transactions</a>
+                        {viewTransaction}
                         </li>
                         <li>
                         <a href="#fake"><span className="glyphicon glyphicon-envelope" /> Messages</a>
@@ -96,13 +120,17 @@ var mapDispatchToProps = (dispatch) =>{
   return{
       onWriteTweet: (postContent) =>{
           dispatch(onWriteTweet(postContent));
+      },
+      onShowTransaction: () => {
+        dispatch(onShowTransaction());  
       }
   };
 };
 
 var mapStateToProps = (state)=>{
     return{
-        navbarAction: state.navbarReducer
+        navbarAction: state.navbarReducer,
+        showTransactionAction: state.showTransactionReducer
     }
 };
 

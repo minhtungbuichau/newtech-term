@@ -1,6 +1,6 @@
 import * as ActionTypes from './../constant/ActionTypes'
 
-export const onViewTransactionHistory = () => {
+export const onShowTransaction = () => {
     return {
         type: ActionTypes.SHOW_TRANSACTION
     }
