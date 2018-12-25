@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import PostItem from './PostItem';
 class PostList extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            account: null,
+        }
+    }
+
+    componentDidMount(){
+
+    }
+
+
+
     render() {
         return (
             <div>
@@ -33,4 +48,9 @@ class PostList extends Component {
     }
 }
 
-export default PostList;
+var mapStateToProps = state =>{
+    return{
+        secretKey: state.loginReducer.secretKey,
+    }
+};
+export default connect( mapStateToProps, null) (PostList);

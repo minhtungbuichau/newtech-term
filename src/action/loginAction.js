@@ -5,3 +5,10 @@ export const login = () => {
         type: ActionTypes.LOGIN
     }
 };
+
+export const onLogin = (secretKey) =>{
+    return{
+        secretKey: secretKey,
+        type: ActionTypes.LOGIN
+    }
+};

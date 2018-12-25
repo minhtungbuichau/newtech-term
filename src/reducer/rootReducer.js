@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
     navbarReducer,
     userInfoReducer,
     postItemReducer,
-    loginReducer
+    loginReducer,
 });
 
 export default rootReducer;

@@ -5,6 +5,7 @@ import {onViewFollower,onViewFollowing, onEditProfile} from '../action/userActio
 import ListFollow from './ListFollow';
 import { VIEW_FOLLOWER, VIEW_FOLLOWING, EDIT_PROFILE} from "../constant/ActionTypes";
 import Modal from 'react-awesome-modal';
+import {getAccountInfo, getAccountInfoByPublicKey} from '../server-apis/account-api'
 
 const username = "Bùi Châu Minh Tùng";
 
@@ -15,17 +16,37 @@ class User extends Component {
     this.state = {
       visibleFollowing : false,
       visibleFollower : false,
-      visibleEditProfile: false
+      visibleEditProfile: false,
+        secretKey: null,
+        account: null,
+        followings: {
+            isShow: false,
+            data: [],
+        },
+        followers: {
+            isShow: false,
+            data: [],
+        },
     }
   }
   
   // state = {
   //   isOwner: true,
   //   selected: "posts"
-  // };  
+  // };
 
+    componentDidMount(){
+      this.readAccountInfo();
+    }
 
-  onClickFollowing = () => {
+    readAccountInfo = async () =>{
+      let account = await getAccountInfo(this.props.secretKey);
+      this.setState({
+          account: account,
+      })
+    };
+
+    onClickFollowing = () => {
     // this.setState({
     //     selected: "following"
     // });
@@ -68,32 +89,80 @@ class User extends Component {
       this.setState({
         visibleFollower : false,
         visibleFollowing : false,
-        visibleEditProfile: false
+        visibleEditProfile: false,
+          followings: {
+              isShow: true,
+          },
       });
-  }
-  
-  createViewFollowingComponent = (text) =>{
-    return (
-        <div>
-          <Modal 
-          visible={this.state.visibleFollowing} 
-          width="350" 
-          height="500" 
-          effect="fadeInUp" 
-          onClickAway={() => this.closeFollowModal()}>
-          <div>
-                <h1>List of Following</h1>
-                <ListFollow followType="Following" followIcon="ok"/>
-                <ListFollow followType="Following" followIcon="ok"/>
-                <ListFollow followType="Following" followIcon="ok"/>
-                <ListFollow followType="Following" followIcon="ok"/>
-                <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
-            </div>
-        </Modal>
-        </div>
-    )
   };
+
+
+  loadListFollowings = async () =>{
+
+      if(this.state.followings.isShow === false) {
+          let addresses = this.state.account.followings;
+
+          var datas = [];
+          for (var index = 0; index < addresses.length; index++) {
+              let address = addresses[index].address;
+              let account = await getAccountInfoByPublicKey(address);
+              alert(account.displayName);
+              datas.push( <ListFollow key={index} followType="Following" followIcon="ok" name={account.displayName}/>);
+          }
+
+          console.log(datas);
+          this.setState({
+              followings: {
+                  isShow: true,
+                  data: datas,
+              },
+          });
+      }
+  };
+
+  loadListFollowers = async () =>{
+      if(this.state.followers.isShow === false) {
+          let addresses = this.state.account.followers;
+
+          var datas = [];
+          for (var index = 0; index < addresses.length; index++) {
+              let address = addresses[index].address;
+              let account = await getAccountInfoByPublicKey(address);
+              alert(account.displayName);
+              datas.push( <ListFollow key={index} followType="Follower" followIcon="plus" name={account.displayName}/>);
+          }
+
+          console.log(datas);
+          this.setState({
+              followers: {
+                  isShow: true,
+                  data: datas,
+              },
+          });
+      }
+  };
+
+  createViewFollowingComponent = (text) =>{
+
+        this.loadListFollowings();
+        return (
+            <div>
+              <Modal
+              visible={this.state.visibleFollowing}
+              width="350"
+              height="500"
+              effect="fadeInUp"
+              onClickAway={() => this.closeFollowModal()}>
+                  {this.state.followings.data}
+
+            </Modal>
+            </div>
+        )
+  };
+
   createViewFollowerComponent = (text) =>{
+
+      this.loadListFollowers();
     return (
         <div>
           <Modal 
@@ -104,10 +173,7 @@ class User extends Component {
           onClickAway={() => this.closeFollowModal()}>
               <div>
                   <h1>List of Follower</h1>
-                  <ListFollow followType="Follower" followIcon="plus"/>
-                  <ListFollow followType="Follower" followIcon="plus"/>
-                  <ListFollow followType="Follower" followIcon="plus"/>
-                  <ListFollow followType="Follower" followIcon="plus"/>
+                  {this.state.followers.data}
                   <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
               </div>
           </Modal>
@@ -116,19 +182,21 @@ class User extends Component {
   };
 
   createViewEditProfile = (text) => {
-    const inputForm = {
-      float: "left"
-  }
+      const inputForm = {
+        float: "left"
+      };
   
-  const form = {
-      marginLeft: "5vh",
-      marginRight: "5vh"
-  }
+      const form = {
+          marginLeft: "5vh",
+          marginRight: "5vh"
+      }
   
   const closeBtn = {
       color: "white",
       marginLeft: "3vh"
-  }
+  };
+
+
     return (
       <div>
          <Modal 
@@ -153,12 +221,12 @@ class User extends Component {
           </Modal>
       </div>
     )
-  }
+  };
 
-  render() {
+   render() {
       const avatarUrl = "https://media.tintucvietnam.vn/uploads/medias/2018/01/28/1024x1024/mot-dem-khong-ngu-vi-nhung-hinh-anh-tuyet-dep-nay-cua-tran-chung-ket-u23-chau-a-bb-baaadedKLx.jpg?v=1517078417042";
-      // const { isOwner } = this.state;
-      
+
+      var account = this.state.account;
       var viewComponent = null;
         switch (this.props.userAction.view) {
             case VIEW_FOLLOWER:
@@ -187,20 +255,20 @@ class User extends Component {
                     <div className="avatar-img">
                         <img href="#" className="img-thumbnail" src={avatarUrl}/>
                     </div>
-                      <a><div className="username" onClick={() => this.onEditProfile()}>{username}</div></a>
+                      <a><div className="username" onClick={() => this.onEditProfile()}>{account? account.displayName: 'NAME NULL'}</div></a>
                       <div className="row">
                        
                         <div className="col-xs-6">
                           <h5>
                             <small>FOLLOWING</small>
                             {/* <div onClick={() =>this.onClickFollowing()}><a href="#">251</a></div> */}
-                            <div onClick={() => this.onClickFollowing()}><a href="#">251</a></div>
+                            <div onClick={() => this.onClickFollowing()}><a href="#">{account? account.followings.length : -1}</a></div>
                           </h5>
                         </div>
                         <div className=" col-xs-6">
                           <h5>
                             <small>FOLLOWERS</small>
-                            <div onClick={() => this.onClickFollower()}><a href="#">251</a></div>
+                            <div onClick={() => this.onClickFollower()}><a href="#">{account? account.followers.length: -1}</a></div>
                           </h5>
                         </div>
                       </div>
@@ -229,6 +297,8 @@ var mapDispatchToProps = (dispatch) =>{
 
 var mapStateToProps = state =>{
   return{
+
+      secretKey: state.loginReducer.secretKey,
       userAction: state.userReducer,
       // navbarAction: state.navbarReducer,
       // userInfoAction: state.userInfoReducer,

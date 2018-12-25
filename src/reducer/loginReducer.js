@@ -1,10 +1,11 @@
 import * as ActionTypes from './../constant/ActionTypes'
 
-const initialState = {}
+const initialState = {};
 const loginReducer = (state = initialState, action) => {
     return {
         ...state,
-        key: action.type
+        secretKey: action.secretKey,
+        type: action.type,
     };
 };
 
