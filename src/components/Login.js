@@ -53,14 +53,6 @@ class Login extends Component {
         );
     }
 
-    redirectHome = () => {
-        return (
-            <Router>
-                <Route exact path="/home" component={Home}/>
-            </Router>
-        );
-    }
-
     getSecretKey = async (e) =>  {
         e.preventDefault();
 

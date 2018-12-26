@@ -21,6 +21,7 @@ class Navbar extends Component {
           this.props.onWriteTweet();
           this.setState({
             visible : true
+
             } );
     };
 
@@ -87,6 +88,7 @@ class Navbar extends Component {
                         <a href="#fake"><span className="glyphicon glyphicon-home" /> Home</a>
                         </li>
                         <li>
+                        <a href="#fake"><span className="glyphicon glyphicon-bell" /> Transactions</a>
                         <a href="#fake"><span className="glyphicon glyphicon-bell" onClick={() => this.onShowTransaction()}/> Transactions</a>
                         {viewTransaction}
                         </li>
@@ -129,6 +131,7 @@ var mapDispatchToProps = (dispatch) =>{
 
 var mapStateToProps = (state)=>{
     return{
+        navbarAction: state.navbarReducer
         navbarAction: state.navbarReducer,
         showTransactionAction: state.showTransactionReducer
     }

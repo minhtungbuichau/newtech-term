@@ -110,6 +110,10 @@ class User extends Component {
               let account = await getAccountInfoByPublicKey(address);
               alert(account.displayName);
               datas.push( <ListFollow key={index} followType="Following" followIcon="ok" name={account.displayName}/>);
+              datas.push( <ListFollow key={index}
+                                      followType="Following"
+                                      followIcon="ok"
+                                      name={account.displayName}/>);
           }
 
           console.log(datas);
