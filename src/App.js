@@ -5,7 +5,7 @@ import {Router} from 'react-router';
 import Home from './components/Home';
 import Login from './components/Login';
 import TransactionHistory from './components/TransactionHistory';
-
+import Profile from './components/Profile'
 class App extends Component {
 
     constructor(props) {
@@ -18,14 +18,14 @@ class App extends Component {
     render() {
 
     return (
-        <BrowserRouter>
-              <div className="App">
-                      <Route path="/" component={Login}/>
-                      <Route path="/home" component={Home}/>
-                      <Route path="/home#" component={Home}/>
-              </div>
-        </BrowserRouter>
-
+        // <BrowserRouter>
+        //       <div className="App">
+        //               <Route path="/" component={Login}/>
+        //               <Route path="/home" component={Home}/>
+        //               <Route path="/home#" component={Home}/>
+        //       </div>
+        // </BrowserRouter>
+        <Profile/>
     );
   }
 }

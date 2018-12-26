@@ -289,8 +289,8 @@ class User extends Component {
                         <img href="#" className="img-thumbnail" src={avatarUrl}/>
                     </div>
                       <a><div className="username" onClick={() => this.onEditProfile()}>{account && account.displayName != ''? account.displayName: 'NAME NULL'}</div></a>
-                        <a><div className="username">balance: {account && account.balance != ''? account.balance: 0}</div></a>
-                        <a><div className="username">energy : {account && account.bandwidth != ''? account.bandwidth: 0}</div></a>
+                        <a><div className="username">Balance: {account && account.balance != ''? account.balance: 0}</div></a>
+                        <a><div className="username">Energy : {account && account.bandwidth != ''? account.bandwidth: 0}</div></a>
 
                         <div className="row">
                        
