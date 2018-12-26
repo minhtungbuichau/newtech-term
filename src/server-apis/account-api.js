@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { Keypair } = require('stellar-base');
-//const transaction = require('../lib/transaction/index');
+const transaction = require('../lib/transaction/index');
 const MAIN_SERVER_URL = "http://localhost:3000";
 const base32 = require('base32.js');
 const vstruct = require('varstruct');
@@ -143,7 +143,6 @@ export const onUpdateAccountName = async (secretKey, newName) =>{
 };
 
 export const onPostContent = async (secretKey, postContent)=>{
-    secretKey = 'SB4BGT5YZY3FIRAGTYMHYKHPUTUY4BWNHAPMVJVFHRQDTSQBWIVMY6CR';
     let key = Keypair.fromSecret(secretKey);
     let publicKey = key.publicKey();
     let lastSequenceResponse = await axios.post(MAIN_SERVER_URL + '/account/lastSequence', {
@@ -176,7 +175,7 @@ export const onPostContent = async (secretKey, postContent)=>{
 
 };
 
-export const onPayment = async (secretKey, amount, addressRecived, notePayment)=>{
+export const onAccountPayment = async (secretKey, amount, addressRecived, notePayment)=>{
     secretKey = 'SB4BGT5YZY3FIRAGTYMHYKHPUTUY4BWNHAPMVJVFHRQDTSQBWIVMY6CR';
     let key = Keypair.fromSecret(secretKey);
     let publicKey = key.publicKey();
@@ -199,10 +198,11 @@ export const onPayment = async (secretKey, amount, addressRecived, notePayment)=
     transaction.sign(tx, secretKey);
     let transaction_data = transaction.encode(tx).toString('base64');
 
-    let result =  await axios.post(MAIN_SERVER_URL + '/account/post', {
+    let result =  await axios.post(MAIN_SERVER_URL + '/account/payment', {
         tx: transaction_data,
     });
-    console.log(result);
+    console.log('this is result of payment');
+    return result.data;
 };
 
 export const getAccountInfo =  async (secretKey) =>{

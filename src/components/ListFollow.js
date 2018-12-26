@@ -27,7 +27,6 @@ class ListFollow extends Component {
                           
                         </div>
                       </div>
-                      
     
                     </div>
             </div>

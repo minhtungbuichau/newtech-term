@@ -19,7 +19,8 @@ class PostList extends Component {
     }
 
     readAccountInfo = async () =>{
-        let account = await getAccountInfo(this.props.secretKey);
+        let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+        let account = await getAccountInfo(secretKey);
         var addresses = [];
         addresses.push(account.public_key);
         for(var index = 0; index < account.followings.length; index++){
@@ -32,11 +33,17 @@ class PostList extends Component {
         for (var index = 0; index < addresses.length; index++) {
             let address = addresses[index];
             let account = await getAccountInfoByPublicKey(address);
+            let base64String = null;
+            if(account.avatar) {
+                //console.log(account.avatar.data);
+                base64String = btoa(String.fromCharCode(...new Uint8Array(account.avatar.data)));
+            }
             for(var postIndex = 0; postIndex < account.posts.length; postIndex++) {
                 var content = account.posts[postIndex].content.text;
                 posts = posts.concat(<PostItem
-                    key={postIndex}
+                    key={posts.length}
                     public_key={account.public_key}
+                    avatar={base64String? base64String : null}
                     name={account.displayName}
                     content={content}/>)
             }

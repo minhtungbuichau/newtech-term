@@ -3,6 +3,7 @@ import ListFollow from "./ListFollow";
 import FollowingItem from "./followingItem";
 import {connect} from 'react-redux';
 import  {getUsers} from '../server-apis/users-api';
+import {getAccountInfo} from "../server-apis/account-api";
 
 class RightColumn extends Component {
 
@@ -19,23 +20,33 @@ class RightColumn extends Component {
     };
 
     getAllUserForFollowing = async ()=>{
-      let result = await getUsers();
-      var data = result.data;
-      var listFollowings = [];
 
-      for(var index = 0; index < data.length; index++){
-        listFollowings.push(<FollowingItem
-            followType="Following"
-            followIcon="plus"
-            name={data[index].displayName}
-            publicKey={data[index].public_key}
-        />)
-      }
+        let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+        let account = await getAccountInfo(secretKey);
+        alert('load.............');
+        let result = await getUsers(secretKey);
+        let items = result.data;
+        var listComponent = [];
 
-      this.setState({
-          listFollowings: listFollowings,
+        for(var index = 0; index < items.length; index++){
+            var item = items[index];
+            var base64String = null;
+            if(item.avatar) {
+                base64String = btoa(String.fromCharCode(...new Uint8Array(item.avatar.data)));
+            }
+            listComponent.push(
+                <FollowingItem
+                    key={index}
+                    followType="Follower"
+                    followIcon="plus" name={item.displayName}
+                    avatar={base64String? base64String : null}
+                    publicKey={item.public_key}
+                />);
+        }
 
-      });
+        this.setState({
+            listFollowings: listComponent,
+        });
     };
 
     render() {
@@ -45,49 +56,10 @@ class RightColumn extends Component {
                     <div className="panel-heading">
                       <h3 className="panel-title">
                         Who to follow
-                        <small><a href="#">Refresh</a> ● <a href="#">View all</a></small>
                       </h3>
                     </div>
                     <div className="panel-body">
-                      <div className="media">
-                        <div className="media-left">
-                          <img src="http://placehold.it/32x32" className="media-object img-rounded" />
-                        </div>
-                        <div className="media-body">
-                          <h4 className="media-heading">Nome e cognome</h4>
-                          <a className="btn btn-default btn-xs">
-                            +
-                            <span className="glyphicon glyphicon-user" />
-                            Follow
-                          </a>
-                        </div>
-                      </div>
-                      <div className="media">
-                        <div className="media-left">
-                          <img src="http://placehold.it/32x32" className="media-object img-rounded" />
-                        </div>
-                        <div className="media-body">
-                          <h4 className="media-heading">Nome e cognome</h4>
-                          <a className="btn btn-default btn-xs">
-                            +
-                            <span className="glyphicon glyphicon-user" />
-                            Follow
-                          </a>
-                        </div>
-                      </div>
-                      <div className="media">
-                        <div className="media-left">
-                          <img src="http://placehold.it/32x32"className="media-object img-rounded" />
-                        </div>
-                        <div className="media-body">
-                          <h4 className="media-heading">Nome e cognome</h4>
-                          <a className="btn btn-default btn-xs">
-                            +
-                            <span className="glyphicon glyphicon-user" />
-                            Follow
-                          </a>
-                        </div>
-                      </div>
+                        {this.state.listFollowings}
                     </div>
                     <div className="panel-footer">
                       <a href="www.google.it">
@@ -96,21 +68,13 @@ class RightColumn extends Component {
                       </a>
                     </div>
                   </div>
-                  <div className="well well-sm">
-                    <p>Faculty of Infomation Technology</p>
-                    <p>New Technology Course</p>
-                    <p>Team Member:</p>
-                    <ul className="team-member">
-                      <li>PHAM Anh Tuan - 1512639</li>
-                      <li>BUI CHAU Minh Tung - 1512651</li>
-                    </ul>
-                  </div>
+                  
             </div>
         );
     }
 }
 
-export default RightColumn;var mapStateToProps = state =>{
+var mapStateToProps = state =>{
     return{
 
         secretKey: state.loginReducer.secretKey,

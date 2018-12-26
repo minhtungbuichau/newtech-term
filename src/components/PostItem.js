@@ -129,12 +129,17 @@ class PostItem extends Component {
         const accountName = {
             textAlign: "left"
         };
+        function hexToBase64(str) {
+            return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+        }
         return ( 
             <div className="media">
                 <a className="media-left" href="#fake">
-                    <img alt="true" 
-                    className="media-object img-rounded img-thumbnail" 
-                    src="http://placehold.it/50x50" />
+                    <img alt="true"
+                    className="media-object img-rounded img-thumbnail"
+                    src={ this.props.avatar? ('data:image/jpeg;base64,' + this.props.avatar) : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuBKleWYmhVwfnTTFepSUNVmHAwFsaJXm-zGCZclKfpTbTsZ0F_Q'}
+                    width={50} height={50}
+                    />
                 </a>
                 <div className="media-body">
                     <h5 style={accountName}>{this.props.name}</h5>

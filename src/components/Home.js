@@ -8,18 +8,6 @@ import './../css/profile.css';
 import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import {connect} from 'react-redux';
-import {
-    accoutLogin,
-    getListFollowers,
-    getListFollowings,
-    onFollowingAccount, onPayment,
-    onPostContent,
-    onUpdateAccountName
-} from '../server-apis/account-api'
-import {EDIT_USER_INFO, VIEW_FOLLOWER, VIEW_FOLLOWING} from "../constant/ActionTypes";
-import userInfoReducer from "../reducer/userInfoReducer";
-import decode from '../transaction/index'
-import {getUsers} from '../server-apis/users-api';
 
 
 
@@ -33,16 +21,6 @@ class Home extends Component {
 
     //created on 09/12/2018
     //function for test read user account from server
-    onReadAccountData = async () =>{
-      //let listFollowers = await  getListFollowers('GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI');
-      //console.log(listFollowers);
-        //let listFollowings = await  getListFollowings('GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI');
-        //console.log(listFollowings);
-        //onUpdateAccountName('', 'PHAM ANH TUAN CROSS - 1512639');
-        //onPostContent('', 'PHAM ANH TUAN CROSS DEMO FOR POST API');
-        //onPayment('',100,'GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI','send money to kha do');
-
-    };
     render() {  
         //navbar
 
@@ -53,10 +31,6 @@ class Home extends Component {
 
         return (
             <div>
-                <button
-                    onClick={this.onReadAccountData}>
-                    BTN LOAD DATA
-                </button>
             <Navbar/>
             <div className="container">
                

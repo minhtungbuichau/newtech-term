@@ -4,7 +4,6 @@ import './../css/bootstrap.css';
 import './../../node_modules/normalize.css';
 import  {accoutLogin} from '../server-apis/account-api';
 import  {connect} from 'react-redux';
-
 import {onWriteTweet} from "../action/navBarAction";
 import {onLogin} from  '../action/loginAction';
 import {Redirect} from  'react-router-dom'
@@ -56,6 +55,7 @@ class Login extends Component {
     getSecretKey = async (e) =>  {
         e.preventDefault();
 
+        alert('loging....');
         var secretKey = document.getElementById('inputSecretKey').value;
 
         let response = await accoutLogin(secretKey);
@@ -66,7 +66,8 @@ class Login extends Component {
 
             //login successfully
             if(status === 1){
-                this.props.onLogin(secretKey);
+               // this.props.onLogin(secretKey);
+                localStorage.setItem('secretKey',JSON.stringify({secretKey: secretKey}));
                 this.setState({
                     isLogin: true,
                 });

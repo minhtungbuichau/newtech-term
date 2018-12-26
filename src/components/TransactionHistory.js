@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './../css/transaction.css'
 class TransactionHistory extends Component {
     render() {
+       
         return (
             <div>
                 <table id="customers">
@@ -13,12 +14,13 @@ class TransactionHistory extends Component {
                         <th>Message</th>
                     </tr>
                     <tr>
-                        <td>DD/MM/YYYY HH:MM</td>
-                        <td>Maria Anders</td>
-                        <td>1000000</td>
-                        <td>TungBCM</td>
-                        <td>I love you</td>
+                        <td>{this.props.time}</td>
+                        <td>{this.props.sender}</td>
+                        <td>{this.props.amount}</td>
+                        <td>{this.props.receiver}</td>
+                        <td>{this.props.message}</td>
                     </tr>
+                    
                 </table>
             </div>
         );

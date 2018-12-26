@@ -42,7 +42,10 @@ class User extends Component {
     }
 
     readAccountInfo = async () =>{
-      let account = await getAccountInfo(this.props.secretKey);
+
+
+      let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+      let account = await getAccountInfo(secretKey);
       this.setState({
           account: account,
       })
@@ -134,7 +137,6 @@ class User extends Component {
           for (var index = 0; index < addresses.length; index++) {
               let address = addresses[index].address;
               let account = await getAccountInfoByPublicKey(address);
-              alert(account.displayName);
               datas.push( <ListFollow key={index} followType="Follower" followIcon="plus" name={account.displayName}/>);
           }
 
@@ -175,7 +177,6 @@ class User extends Component {
       });
   };
   createViewFollowerComponent = (text) =>{
-
       this.loadListFollowers();
     return (
         <div>
@@ -245,7 +246,7 @@ class User extends Component {
                                 onChange={this.handleChange}/>
                         </div>
 
-                        <button  id="btn-update-name" type="button" className="btn btn-primary"  onClick={this.onUpdateProfile}>Update</button>
+                        <button href="javascript:void(0);" id="btn-update-name" type="button" className="btn btn-primary"  onClick={this.onUpdateProfile}>Update</button>
                         
                     </form>
                   <a href="javascript:void(0);" onClick={() => this.closeFollowModal()}>Close</a>
@@ -287,14 +288,17 @@ class User extends Component {
                     <div className="avatar-img">
                         <img href="#" className="img-thumbnail" src={avatarUrl}/>
                     </div>
-                      <a><div className="username" onClick={() => this.onEditProfile()}>{account? account.displayName: 'NAME NULL'}</div></a>
-                      <div className="row">
+                      <a><div className="username" onClick={() => this.onEditProfile()}>{account && account.displayName != ''? account.displayName: 'NAME NULL'}</div></a>
+                        <a><div className="username">balance: {account && account.balance != ''? account.balance: 0}</div></a>
+                        <a><div className="username">energy : {account && account.bandwidth != ''? account.bandwidth: 0}</div></a>
+
+                        <div className="row">
                        
                         <div className="col-xs-6">
                           <h5>
                             <small>FOLLOWING</small>
                             {/* <div onClick={() =>this.onClickFollowing()}><a href="#">251</a></div> */}
-                            <div onClick={() => this.onClickFollowing()}><a href="#">{account? account.followings.length : -1}</a></div>
+                            <div onClick={() => this.onClickFollowing()}><a>{account? account.followings.length : -1}</a></div>
                           </h5>
                         </div>
                         <div className=" col-xs-6">
