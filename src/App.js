@@ -5,6 +5,8 @@ import {Router} from 'react-router';
 import Home from './components/Home';
 import Login from './components/Login';
 import TransactionHistory from './components/TransactionHistory';
+import {Redirect} from 'react-router';
+
 import Profile from './components/Profile'
 class App extends Component {
 
@@ -18,6 +20,15 @@ class App extends Component {
     render() {
 
     return (
+        <BrowserRouter>
+              <div className="App">
+                      <Route path="/" component={Login}/>
+                      <Route path="/home" component={Home}/>
+                      <Route path="/home#" component={Home}/>
+                      <Route path="/Profile" component={Profile}/>
+              </div>
+        </BrowserRouter>
+
         // <BrowserRouter>
         //       <div className="App">
         //               <Route path="/" component={Login}/>
@@ -26,6 +37,7 @@ class App extends Component {
         //       </div>
         // </BrowserRouter>
         <Profile/>
+       // <Profile/>
     );
   }
 }

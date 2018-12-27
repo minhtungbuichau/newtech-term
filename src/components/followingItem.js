@@ -10,6 +10,7 @@ class FollowingItem extends Component {
 
     onFollow = ()=>{
         alert(this.props.publicKey);
+        //alert(this.props.publicKey);
         let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
         onFollowingAccount(secretKey, this.props.publicKey)
     };

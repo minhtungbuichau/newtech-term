@@ -144,6 +144,8 @@ class PostItem extends Component {
                 <div className="media-body">
                     <h5 style={accountName}>Đây là dòng tên của Tùng</h5>
                    <p>Đây là dòng demo</p>
+                    <h5 style={accountName}>{this.props.name}</h5>
+                   <p>{this.props.content}</p>
                      <ul className="nav nav-pills nav-pills-custom">
                         <li onClick={()=>this.onClickHeart()}><a href="#"><span className="glyphicon glyphicon-heart" />{numberOfHeartReact}</a></li>                 
                         <li onClick={()=>this.onClickComment()}><a href="#"><span className="glyphicon glyphicon-comment" />{numberOfCommentReact}</a></li>

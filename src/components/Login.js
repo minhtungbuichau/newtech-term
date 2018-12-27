@@ -18,6 +18,18 @@ class Login extends Component {
 
     render() {
 
+        if(JSON.parse(localStorage.getItem('secretKey')) != null) {
+            let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+            if (secretKey && secretKey !== '') {
+                return (
+                    <div>
+                        <Redirect to="/home"/>
+                    </div>
+                )
+            }
+        }
+
+
         if(this.state.isLogin === true){
             return(
                 <Redirect to="/home"/>
@@ -55,6 +67,7 @@ class Login extends Component {
     getSecretKey = async (e) =>  {
         e.preventDefault();
         alert('loging....');
+        //alert('loging....');
         var secretKey = document.getElementById('inputSecretKey').value;
 
         let response = await accoutLogin(secretKey);

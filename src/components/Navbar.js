@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
+import  {Redirect} from 'react-router';
 import  {connect} from 'react-redux';
 import  {onWriteTweet,onPayment, onShowTransaction} from './../action/navBarAction';
 import TransactionHistory from './TransactionHistory';
@@ -20,6 +21,8 @@ class Navbar extends Component {
             receiver: '',
             messageReceive: '',
             postContent: '',
+            isGotoHome: false,
+            isLogout: false,
 
         };
     }
@@ -47,6 +50,8 @@ class Navbar extends Component {
         let account = await getAccountInfo(secretKey);
         this.setState({
             account: account,
+            isGotoHome: false,
+            isLogout: false,
         })
     };
 
@@ -132,8 +137,10 @@ class Navbar extends Component {
             listPayments.push(<TransactionHistory
                 time={payment.time}
                 sender={payment.type === 'RECEIVE'? payment.data.address: this.state.account.public_key}
+                sender={payment.type === 'RECEIVE'?payment.data.address: this.state.account.public_key}
                 amount={payment.data.amount}
                 receiver={payment.type === 'SEND'? payment.data.address: this.state.account.public_key}
+                receiver={payment.type === 'SEND'?  this.state.account.public_key :payment.data.address}
 
             />);
         }
@@ -146,10 +153,24 @@ class Navbar extends Component {
         return (
             <div>
                 <Modal visible={this.state.visibleShowTransaction} width="700" height="500" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
+                <Modal visible={this.state.visibleShowTransaction}  width="max-width" height="400" effect="fadeInUp" onClickAway={() => this.closeTweetModal()}>
                     <div style ={transactionList}>
                         <h1>List of Transactions</h1>
                         {
                             listPayments
+                            <table id="customers">
+                                <thead>
+                                    <th>Time</th>
+                                    <th>Sender</th>
+                                    <th>Amount</th>
+                                    <th>Receiver</th>
+                                    <th>Message</th>
+                                </thead>
+                                <tbody>
+                                {listPayments}
+                                </tbody>
+
+                            </table>
                         }
                         <a href="javascript:void(0);" onClick={() => this.closeTweetModal()}>Close</a>
                     </div>
@@ -225,6 +246,18 @@ class Navbar extends Component {
         )
     }
 
+    onGoToHome = ()=>{
+      this.setState({
+          isGotoHome: true,
+      })
+    };
+
+    onLogout = () => {
+        localStorage.setItem('secretKey',null);
+        this.setState({
+            isLogout: true,
+        });
+    };
     render() {
 
         //var tweetContent = this.createTweetComponent(this.props.navbarAction.content);
@@ -243,6 +276,26 @@ class Navbar extends Component {
                 break;
 
         }
+
+        if(this.state.isLogout){
+            return(
+                <div>
+                    <Redirect to="/login"/>
+                </div>
+            );
+        }
+
+        if(this.state.isGotoHome){
+            return(
+                <div>
+                    <Redirect to="/home"/>
+                </div>
+            );
+        }
+
+        const marginRight = {
+          marginRight: '40px'
+        };
         return (
             <div>
                 <div className="navbar navbar-default navbar-static-top">
@@ -251,6 +304,7 @@ class Navbar extends Component {
                             <ul className="nav navbar-nav">
                                 <li className="active">
                                     <a onClick={() => this.onWriteTweet()}><span className="glyphicon glyphicon-home" /> Home</a>
+                                    <a onClick={this.onGoToHome}><span className="glyphicon glyphicon-home" /> Home</a>
                                 </li>
                                 <li>
                                     <a onClick={() => this.onShowTransaction()}><span className="glyphicon glyphicon-usd" /> Transactions</a>
@@ -262,12 +316,25 @@ class Navbar extends Component {
                             </ul>
                             <div className="navbar-form navbar-right">
                                 <button className="btn btn-primary"
+                                <button className="btn btn-success"
+                                        style={marginRight}
                                         type="submit"
                                         aria-label="Left Align"
                                         onClick={() =>this.onWriteTweet()}
+                                        onClick={() =>this.onWriteTweet()
+                                        }
                                 >
                                     {/* {tweetContent} */}
                                     <span className="glyphicon glyphicon-pencil" aria-hidden="true"> </span> Tweet
+                                </button>
+
+                                <button className="btn btn-danger"
+                                        type="button"
+                                        aria-label="Left Align"
+                                        onClick={this.onLogout}
+                                >
+                                    {/* {tweetContent} */}
+                                    <span className="glyphicon glyphicon-log-out" aria-hidden="true"> </span> LOGOUT
                                 </button>
                             </div>
                         </div>

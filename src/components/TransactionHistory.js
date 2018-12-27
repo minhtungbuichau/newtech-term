@@ -23,6 +23,13 @@ class TransactionHistory extends Component {
                     
                 </table>
             </div>
+                        <tr>
+                            <td>{this.props.time}</td>
+                            <td>{this.props.sender}</td>
+                            <td>{this.props.amount}</td>
+                            <td>{this.props.receiver}</td>
+                            <td>{this.props.message}</td>
+                        </tr>
         );
     }
 }

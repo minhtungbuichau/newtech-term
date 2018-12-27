@@ -41,6 +41,10 @@ class User extends Component {
       this.readAccountInfo();
     }
 
+    reCreateData(){
+        this.readAccountInfo();
+    }
+
     readAccountInfo = async () =>{
 
 
@@ -97,6 +101,7 @@ class User extends Component {
         visibleEditProfile: false,
           followings: {
               isShow: true,
+              isShow: false,
           },
       });
   };
@@ -105,6 +110,7 @@ class User extends Component {
   loadListFollowings = async () =>{
 
       if(this.state.followings.isShow === false) {
+      if(this.state.followings.isShow === false && this.state.account !== null) {
           let addresses = this.state.account.followings;
 
           var datas = [];
@@ -113,10 +119,19 @@ class User extends Component {
               let account = await getAccountInfoByPublicKey(address);
               alert(account.displayName);
               datas.push( <ListFollow key={index} followType="Following" followIcon="ok" name={account.displayName}/>);
+              var base64String = null;
+              if(account.avatar) {
+                  //console.log(account.avatar.data);
+                  base64String = btoa(String.fromCharCode(...new Uint8Array(account.avatar.data)));
+              }
               datas.push( <ListFollow key={index}
                                       followType="Following"
                                       followIcon="ok"
                                       name={account.displayName}/>);
+                                      name={account.displayName}
+                                      avatar={base64String? base64String : null}
+                                      publicKey={account.public_key}
+              />);
           }
 
           console.log(datas);
@@ -209,6 +224,10 @@ class User extends Component {
   };
 
   createViewEditProfile = (text) => {
+
+      if(this.state.account === null){
+          this.reCreateData();
+      }
       const inputForm = {
         float: "left"
       };

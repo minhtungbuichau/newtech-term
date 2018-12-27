@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import  {editUserInfo} from  '../action/userInfoAction'
 import  {connect} from  'react-redux';
 import Modal from 'react-awesome-modal';
+import {onCreateAccount} from '../server-apis/account-api'
 
 var school="";
 var phoneNumber="";
@@ -14,9 +15,47 @@ class UserInfo extends Component {
         super(props);
         this.state = {
             secretKey: null,
+            newAccountPublicKey: '',
         }
         
     }
+
+    handleChange = (e) =>{
+        let name = e.target.name;
+        let value = e.target.value;
+
+        this.setState({
+            [name] : value,
+        });
+
+
+    };
+
+    onCreateNewAccount = async (e) =>{
+        e.preventDefault();
+        let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+        let result = await onCreateAccount(secretKey,this.state.newAccountPublicKey);
+        switch (result.status) {
+            case 1:
+                alert('CREATE ACCOUNT SUCCESSFULY');
+                this.setState({
+                    newAccountPublicKey: '',
+                });
+                break;
+
+            case 0:
+                alert('CREATE ACCOUNT FAILED');
+                break;
+            case -1:
+                alert('CREATE ACCOUNT FAILED');
+                break;
+            default:
+                break;
+        }
+        this.setState({
+            newAccountPublicKey: '',
+        });
+    };
 
 
     render() {
@@ -34,8 +73,22 @@ class UserInfo extends Component {
                     <div className="panel-body form-group">
                           <label for="">Public key:</label>
                           <input type="text" className="form-control" placeHolder="Public key"/>
+                          <input
+                              name="newAccountPublicKey"
+                              type="text"
+                              className="form-control"
+                              placeholder="Public key"
+                              value={this.state.newAccountPublicKey}
+                              onChange={this.handleChange}
+
+                          />
                           <hr/>
                           <button className="btn btn-success" type="submit">Create</button>
+                          <button
+                              className="btn btn-success"
+                              type="button"
+                              onClick={this.onCreateNewAccount}
+                          >Create</button>
                     </div>
                     </div>
                   <div className="well well-sm">

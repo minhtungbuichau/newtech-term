@@ -82,6 +82,7 @@ export const onFollowingAccount = async (secretKey, accountFollowing) =>{
     let lastSequence = lastSequenceResponse.data.sequence;
 
     var followings =   [Buffer.from(base32.decode('GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI'))];
+    var followings =   [Buffer.from(base32.decode(accountFollowing))];
     let value =  Followings.encode({
         addresses : followings,
     });
@@ -232,4 +233,38 @@ export const getAccountInfoByPublicKey =  async (publicKey) =>{
         return null;
     }
 };
+
+export const onCreateAccount =  async (secretKey,newAccountAddress)=>{
+    try {
+        let key = Keypair.fromSecret(secretKey);
+        let publicKey = key.publicKey();
+        let lastSequenceResponse = await axios.post(MAIN_SERVER_URL + '/account/lastSequence', {
+            public_key: publicKey,
+        });
+
+        let lastSequence = lastSequenceResponse.data.sequence;
+        let tx = {
+            version: 1,
+            sequence: lastSequence + 1,
+            memo: Buffer.from('', 'utf-8'),
+            operation: 'payment',
+            params: {
+                address: newAccountAddress,
+            }
+        };
+
+        transaction.sign(tx, secretKey);
+        let transaction_data = transaction.encode(tx).toString('base64');
+
+        let result = await axios.post(MAIN_SERVER_URL + '/account/createAccount', {
+            tx: transaction_data,
+        });
+        console.log('this is result of payment');
+        return result.data;
+    }
+    catch (e) {
+        return {status: -1}
+    }
+};
+
 

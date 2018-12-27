@@ -24,6 +24,7 @@ class RightColumn extends Component {
         let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
         let account = await getAccountInfo(secretKey);
         alert('load.............');
+        //alert('load.............');
         let result = await getUsers(secretKey);
         let items = result.data;
         var listComponent = [];
