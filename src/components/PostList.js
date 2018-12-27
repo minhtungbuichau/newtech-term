@@ -34,6 +34,7 @@ class PostList extends Component {
             let address = addresses[index];
             let account = await getAccountInfoByPublicKey(address);
             let base64String = null;
+            var base64String = null;
             if(account.avatar) {
                 //console.log(account.avatar.data);
                 base64String = btoa(String.fromCharCode(...new Uint8Array(account.avatar.data)));

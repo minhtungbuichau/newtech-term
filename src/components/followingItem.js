@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {onFollowingAccount} from '../server-apis/account-api'
 
 
 class FollowingItem extends Component {
@@ -9,6 +10,8 @@ class FollowingItem extends Component {
 
     onFollow = ()=>{
         alert(this.props.publicKey);
+        let secretKey = JSON.parse(localStorage.getItem('secretKey')).secretKey;
+        onFollowingAccount(secretKey, this.props.publicKey)
     };
     render() {
         const followBtn = {

@@ -54,7 +54,6 @@ class Login extends Component {
 
     getSecretKey = async (e) =>  {
         e.preventDefault();
-
         alert('loging....');
         var secretKey = document.getElementById('inputSecretKey').value;
 
